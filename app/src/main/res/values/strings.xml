@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Yong_Xia</string>
+    <!--15 nbsp-->
+    <string name="name_locale">%1$-16s</string>
+    <!--17 nbsp-->
+    <string name="date_locale">%1$-18s</string>
+    <!--8 nbsp-->
+    <string name="time_locale">%1$-8s</string>
+</resources>
