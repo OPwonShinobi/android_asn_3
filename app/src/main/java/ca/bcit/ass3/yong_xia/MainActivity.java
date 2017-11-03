@@ -39,9 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void populateDb() {
         Event[] events = new Event[3];
-        events[0] = new Event("Halloween Party", "Oct 30, 2017", "6:30 PM", "N/A Desc");
-        events[1] = new Event("Christmas Party", "December 20, 2017", "12:30 PM", "N/A Desc");
-        events[2] = new Event("New Year Eve", "December 31, 2017", "8:00 PM", "N/A Desc");
+        events[0] = new Event("Halloween Party", "Oct 30, 2017", "6:30 PM");
+        events[1] = new Event("Christmas Party", "December 20, 2017", "12:30 PM");
+        events[2] = new Event("New Year Eve", "December 31, 2017", "8:00 PM");
         db = helper.getWritableDatabase();
         try {
             //@TODO: will need to remove this
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         String[] events = null;
         try {
             db = helper.getReadableDatabase();
-            cursor = db.rawQuery("select Name, Date, Time, Desc from Event_Master", null);
+            cursor = db.rawQuery("select Name, Date, Time from Event_Master", null);
 
             //@TODO: should check if getCount == 0
             int count = cursor.getCount();
@@ -81,12 +81,10 @@ public class MainActivity extends AppCompatActivity {
                     String name = cursor.getString(cursor.getColumnIndex("Name"));
                     String date = cursor.getString(cursor.getColumnIndex("Date"));
                     String time = cursor.getString(cursor.getColumnIndex("Time"));
-                    String desc = cursor.getString(cursor.getColumnIndex("Desc"));
 
                     events[i] = String.format(getResources().getString(R.string.name_locale), name);
                     events[i] += String.format(getResources().getString(R.string.date_locale), date);
                     events[i] += String.format(getResources().getString(R.string.time_locale), time);
-                    events[i] += "\n" +desc;
                     ++i;
                 } while( cursor.moveToNext() );
             }

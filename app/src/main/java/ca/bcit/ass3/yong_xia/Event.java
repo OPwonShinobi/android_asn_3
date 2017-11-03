@@ -9,13 +9,10 @@ public class Event {
     private String date;
     private String time;
 
-    private String description;
-
-    public Event(String name, String date, String time, String description) {
+    public Event(String name, String date, String time) {
         this.name = name;
         this.date = date;
         this.time = time;
-        this.description = description;
     }
 
     public String getName() {
@@ -29,9 +26,4 @@ public class Event {
     public String getTime() {
         return time;
     }
-
-    public String getDescription() {
-        return description;
-    }
-
 }
