@@ -33,6 +33,7 @@ public class PotluckDbHelper extends SQLiteOpenHelper {
 
     private void updateDatabase(SQLiteDatabase db, int oldVer, int newVer) {
         try {
+            db.execSQL( "DROP TABLE Event_Master" );
             if (oldVer == 0) {
                 db.execSQL( CreateTableEventMasterSQL() );
                 db.execSQL( CreateTableEventDetailSQL() );
@@ -55,7 +56,8 @@ public class PotluckDbHelper extends SQLiteOpenHelper {
         sql += "_eventId INTEGER PRIMARY KEY AUTOINCREMENT, ";
         sql += "Name TEXT, ";
         sql += "Date TEXT, ";
-        sql += "Time TEXT ); ";
+        sql += "Time TEXT, ";
+        sql += "Desc TEXT); ";
         return sql;
     }
 
@@ -90,6 +92,7 @@ public class PotluckDbHelper extends SQLiteOpenHelper {
         entryRow.put("Name", event.getName());
         entryRow.put("Date", event.getDate());
         entryRow.put("Time", event.getTime());
+        entryRow.put("Desc", event.getDescription());
         db.insert("Event_Master", null, entryRow);
     }
 
