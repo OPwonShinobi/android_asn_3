@@ -6,4 +6,24 @@
     <string name="date_locale">%1$-18s</string>
     <!--8 nbsp-->
     <string name="time_locale">%1$-8s</string>
+
+    <string name="item_locale">%1$-15s</string>
+    <string name="unit_locale">%1$-10s</string>
+    <string name="quantity_locale">%1$-15s</string>
+
+    <string name="addBtn">Add</string>
+    <string name="item">Item</string>
+    <string name="unit">Unit</string>
+    <string name="quantity">Quantity</string>
+    <string name="name">Name</string>
+
+    <string name="empty_field_error">One or more field(s) is empty.\nPlease fill in all fields.</string>
+
+    <string name="item_query_specific">SELECT ITEM, QUANTITY, UNIT FROM EVENT_DETAIL WHERE %1$s = %2$s;</string>
+    <string name="item_query_all">SELECT ITEM, QUANTITY, UNIT FROM EVENT_DETAIL;</string>
+    <string name="event_query_specific">SELECT EVENT, DATE, TIME FROM EVENT_MASTER WHERE %1$s = %2$s;</string>
+    <string name="event_query_all">SELECT EVENT, DATE, TIME FROM EVENT_MASTER;</string>
+    <string name="item_name_col">ItemName</string>
+    <string name="item_unit_col">ItemUnit</string>
+    <string name="item_quantity_col">ItemQuantity</string>
 </resources>

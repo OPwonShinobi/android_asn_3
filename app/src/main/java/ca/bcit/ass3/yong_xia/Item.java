@@ -8,11 +8,13 @@ public class Item {
     private String name;
     private String unit;
     private int quantity;
+    private int eventID;
 
-    public Item(String name, String unit, int quantity) {
+    public Item(String name, String unit, int quantity, int eventID) {
         this.name = name;
         this.unit = unit;
         this.quantity = quantity;
+        this.eventID = eventID;
     }
 
     public String getName() {
@@ -26,4 +28,6 @@ public class Item {
     public int getQuantity() {
         return quantity;
     }
+
+    public int getEventID() { return eventID; }
 }

@@ -36,7 +36,6 @@ public class PotluckDbHelper extends SQLiteOpenHelper {
             if (oldVer == 0) {
                 db.execSQL( CreateTableEventMasterSQL() );
                 db.execSQL( CreateTableEventDetailSQL() );
-                db.execSQL( CreateTableContributionSQL() );
             }
         } catch ( SQLException sqlE) {
             String toastMsg = "PotluckDbhelper-> updateDatabase or insert" +
@@ -49,7 +48,7 @@ public class PotluckDbHelper extends SQLiteOpenHelper {
 
     //might as well be a variable
     //but will be much less readable
-    private String CreateTableEventMasterSQL() {
+    public String CreateTableEventMasterSQL() {
         String sql = "";
         sql += "CREATE TABLE Event_Master (";
         sql += "_eventId INTEGER PRIMARY KEY AUTOINCREMENT, ";
@@ -59,33 +58,24 @@ public class PotluckDbHelper extends SQLiteOpenHelper {
         return sql;
     }
 
-    private String CreateTableEventDetailSQL() {
+    public void dropTableSQL(SQLiteDatabase writeableDB, String tableName) {
+        writeableDB.execSQL("DROP TABLE " + tableName + ";");
+    }
+
+    public String CreateTableEventDetailSQL() {
         String sql = "";
-        sql += "CREATE TABLE Event_Details (";
+        sql += "CREATE TABLE Event_Detail (";
         sql += "_detailId INTEGER PRIMARY KEY AUTOINCREMENT, ";
         sql += "ItemName TEXT, ";
         sql += "ItemUnit TEXT, ";
         sql += "ItemQuantity INTEGER, ";
         sql += "_eventId INTEGER, ";
-        sql += "CONSTRAINT fKey_eventId FOREIGN KEY (eventId) ";
-        sql += "REFERENCES Event_Master(eventId));";
+        sql += "CONSTRAINT fKey_eventId FOREIGN KEY (_eventId) ";
+        sql += "REFERENCES Event_Master(_eventId));";
         return sql;
     }
 
-    private String CreateTableContributionSQL() {
-        String sql = "";
-        sql += "CREATE TABLE Contribution (";
-        sql += "_contributionId INTEGER PRIMARY KEY AUTOINCREMENT, ";
-        sql += "Name TEXT, ";
-        sql += "Quantity INTEGER, ";
-        sql += "Date TEXT, ";
-        sql += "_detailId TEXT, ";
-        sql += "CONSTRAINT fKey_detailId FOREIGN KEY (_detailId) ";
-        sql += "REFERENCES Event_Detail (_detailId));";
-        return sql;
-    }
-
-    public void InsertEventMasterSQLTableEntry(SQLiteDatabase db, Event event) {
+    public void InsertSQLTableEntry(SQLiteDatabase db, Event event) {
         ContentValues entryRow = new ContentValues();
         entryRow.put("Name", event.getName());
         entryRow.put("Date", event.getDate());
@@ -93,11 +83,12 @@ public class PotluckDbHelper extends SQLiteOpenHelper {
         db.insert("Event_Master", null, entryRow);
     }
 
-    public void InsertEventDetailsSQLTableEntry(SQLiteDatabase db, Item item) {
+    public void InsertSQLTableEntry(SQLiteDatabase db, Item item) {
         ContentValues entryRow = new ContentValues();
-        entryRow.put("Item", item.getName());
-        entryRow.put("Quantity", item.getQuantity());
-        entryRow.put("Unit", item.getUnit());
-        db.insert("Event_Details", null, entryRow);
+        entryRow.put("ItemName", item.getName());
+        entryRow.put("ItemUnit", item.getUnit());
+        entryRow.put("ItemQuantity", item.getQuantity());
+        entryRow.put("_eventID", item.getEventID());
+        db.insert("Event_Detail", null, entryRow);
     }
 }

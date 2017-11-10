@@ -1,13 +1,17 @@
 package ca.bcit.ass3.yong_xia;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
@@ -45,9 +49,11 @@ public class MainActivity extends AppCompatActivity {
         db = helper.getWritableDatabase();
         try {
             //@TODO: will need to remove this
-            db.execSQL("delete from Event_Master");
+            //db.execSQL("delete from Event_Master;");
+            ((PotluckDbHelper)helper).dropTableSQL(db, "Event_Master"); //note to self, dont drop tables, rowid start from 1 after
+            db.execSQL( ((PotluckDbHelper)helper).CreateTableEventMasterSQL());
             for(Event event : events) {
-                ((PotluckDbHelper)helper).InsertEventMasterSQLTableEntry(db, event);
+                ((PotluckDbHelper)helper).InsertSQLTableEntry(db, event);
             }
 
         } catch (SQLiteException sqle) {
@@ -95,7 +101,29 @@ public class MainActivity extends AppCompatActivity {
             t.show();
         }
         ArrayAdapter<String> myAdapter = new ArrayAdapter<String>(this, R.layout.custom_list_view, events);
+
         eventsListView.setAdapter(myAdapter);
+        eventsListView.setOnItemClickListener(new myItemClickListener());
         db.close();
+    }
+
+    private class myItemClickListener implements AdapterView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            if (i == 0) { // header row, dont do anything
+                return;
+            }
+            ListView eventsListView = (ListView) findViewById(R.id.eventsListView);
+            String eventString = ((String)eventsListView.getItemAtPosition(i));
+            //String eventName = (eventString.split())[0]; cant bc of stuff like "new years eve"
+
+            Intent intent = new Intent(MainActivity.this, EventDetailActivity.class);
+            intent.putExtra("EVENT_ID", i); //send the actual eventId in db, for some reason always start at 1
+            intent.putExtra("EVENT_STR", eventString);
+//            Toast t = Toast.makeText(MainActivity.this, eventName ,Toast.LENGTH_SHORT);
+//            t.show();
+            startActivity(intent);
+        }
     }
 }
